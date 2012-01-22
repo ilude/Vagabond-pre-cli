@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   s.add_development_dependency "guard-rspec"
   s.add_development_dependency "guard-bundler"
-  s.add_development_dependency 'win32console' if s.platform.to_s == 'x86-mswin32'
+  #s.add_development_dependency 'win32console'
 
   # s.add_runtime_dependency "rest-client"
 end
