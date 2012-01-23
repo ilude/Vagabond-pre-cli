@@ -1,12 +1,14 @@
 require "vagabond/version"
-require "vagabond/command"
+require "vagabond/VM/commands"
 require "vagabond/box"
+require "vagabond/template"
+require "vagabond/environment"
 
 module Vagabond
   def self.virtualbox_found?
   	if(@version.nil?)
-  		begin
-      	!Vagabond::Command.version.empty?
+		  begin
+      	!Vagabond::VM::Commands.version.empty?
     	rescue
       	false
     	end
