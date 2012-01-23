@@ -2,6 +2,7 @@
 
 guard 'bundler' do
   watch('Gemfile')
+  watch('vagabond.gemspec')
 end
 
 guard 'rspec', :version => 2, :cli => '--no-color --format doc' do

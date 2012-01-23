@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   s.add_development_dependency "guard-rspec"
   s.add_development_dependency "guard-bundler"
+  s.add_development_dependency "ruby_gntp"
   #s.add_development_dependency 'win32console'
 
   # s.add_runtime_dependency "rest-client"

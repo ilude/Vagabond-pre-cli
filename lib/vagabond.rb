@@ -1,18 +1,15 @@
 require "vagabond/version"
+require "vagabond/command"
+require "vagabond/box"
 
 module Vagabond
-  @vboxmanage = 'vboxmanage'
-  def self.virtualbox_installed?
+  def self.virtualbox_found?
   	if(@version.nil?)
   		begin
-      		IO.popen "#{@vboxmanage} -v" do |process|
-      			@version = process.read
-      			process.close
-      		end
-      		true
+      	!Vagabond::Command.version.empty?
     	rescue
-      		false
+      	false
     	end
-	end
+    end
   end
 end
