@@ -1,8 +1,10 @@
 require "vagabond/version"
 require "vagabond/VM/commands"
+require "vagabond/web"
 require "vagabond/box"
 require "vagabond/template"
 require "vagabond/environment"
+
 
 module Vagabond
   def self.virtualbox_found?
