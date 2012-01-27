@@ -45,6 +45,7 @@ module Vagabond
       Vagabond::VM::Commands.create_disk(name, "#{name}.vdi", 10140)
       Vagabond::VM::Commands.attach_disk(name, "#{name}.vdi")
       Vagabond::VM::Commands.attach_iso(name, "C:/Users/Mike/Downloads/ISO/ubuntu-11.10-server-amd64.iso")
+      Vagabond::VM::Commands.set_boot_order(name)
       Vagabond::VM::Commands.create_ssh_mapping(name)
       Vagabond::VM::Commands.start(name)
 

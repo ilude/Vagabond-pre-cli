@@ -45,7 +45,14 @@ module Vagabond
       end
 
       def self.create_ssh_mapping(boxname, guestport=22, hostport=7222)
-        execute  "modifyvm \"#{boxname}\" --natpf1 'guestssh,tcp,,#{hostport},,#{guestport}'",
+        execute "modifyvm \"#{boxname}\" --natpf1 'guestssh,tcp,,#{hostport},,#{guestport}'",
+      end
+
+      def self.set_boot_order(boxname)
+        execute "modifyvm \"#{boxname}\" --boot1 disk"
+        execute "modifyvm \"#{boxname}\" --boot2 dvd"
+        execute "modifyvm \"#{boxname}\" --boot3 none"
+        execute "modifyvm \"#{boxname}\" --boot4 none"
       end
 
       def self.start(boxname)
