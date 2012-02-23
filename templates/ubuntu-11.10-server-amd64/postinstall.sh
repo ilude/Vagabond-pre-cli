@@ -1,6 +1,8 @@
-# postinstall.sh created from Mitchell's official lucid32/64 baseboxes
-
+#!/bin/sh -e
+# set the build date and virtual box version
 date > /etc/vagabond_build_date
+#echo "<%= env.vbox_version %>" > /etc/vagabond_vbox_version
+echo "4.1.8" > /etc/vagabond_vbox_version
 
 # Apt-install various things necessary for Ruby, guest additions,
 # etc., and remove optional things to trim down the machine.
@@ -28,15 +30,13 @@ gem clean
 # Install Bundler & chef
 gem install bundler chef --no-ri --no-rdoc
 
-
-
 # Installing vagrant keys
-mkdir /home/vagrant/.ssh
-chmod 700 /home/vagrant/.ssh
-cd /home/vagrant/.ssh
-wget --no-check-certificate 'https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub' -O authorized_keys
-chmod 600 /home/vagrant/.ssh/authorized_keys
-chown -R vagrant /home/vagrant/.ssh
+#mkdir /home/vagrant/.ssh
+#chmod 700 /home/vagrant/.ssh
+#cd /home/vagrant/.ssh
+#wget --no-check-certificate 'https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub' -O authorized_keys
+#chmod 600 /home/vagrant/.ssh/authorized_keys
+#chown -R vagrant /home/vagrant/.ssh
 
 # Installing the virtualbox guest additions
 #VBOX_VERSION=$(cat /home/vagrant/.vbox_version)
@@ -46,26 +46,26 @@ chown -R vagrant /home/vagrant/.ssh
 #sh /mnt/VBoxLinuxAdditions.run
 #rm VBoxGuestAdditions_$VBOX_VERSION.iso
 
-cd /tmp
-wget http://download.virtualbox.org/virtualbox/4.1.8/VBoxGuestAdditions_4.1.8.iso
-mount -o loop VBoxGuestAdditions_4.1.8.iso
+VBOX_VERSION=$(cat /etc/vagabond_vbox_version)
+#wget http://download.virtualbox.org/virtualbox/4.1.8/VBoxGuestAdditions_4.1.8.iso
+wget http://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso
+#mount -o loop VBoxGuestAdditions_4.1.8.iso
+mount -o loop VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
 sh /mnt/VBoxLinuxAdditions.run
 umount /mnt
-rm VBoxGuestAdditions_4.1.8.iso
-
-
+#rm VBoxGuestAdditions_4.1.8.iso
+rm VBoxGuestAdditions_$VBOX_VERSION.iso
+unset VBOX_VERSION
 
 # Remove items used for building, since they aren't needed anymore
 apt-get -y remove linux-headers-$(uname -r) build-essential
+apt-get -y clean
+apt-get -y autoclean
 apt-get -y autoremove
-
-# Zero out the free space to save space in the final image:
-dd if=/dev/zero of=/EMPTY bs=1M
-rm -f /EMPTY
 
 # Removing leftover leases and persistent rules
 echo "cleaning up dhcp leases"
-rm /var/lib/dhcp3/*
+rm /var/lib/dhcp/*
 
 # Make sure Udev doesn't block our network
 # http://6.ptmc.org/?p=164
@@ -77,4 +77,7 @@ rm /lib/udev/rules.d/75-persistent-net-generator.rules
 
 echo "Adding a 2 sec delay to the interface up, to make the dhclient happy"
 echo "pre-up sleep 2" >> /etc/network/interfaces
-exit
+
+mv /etc/rc.local.orig /etc/rc.local
+
+exit 0 
