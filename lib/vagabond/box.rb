@@ -2,8 +2,7 @@ require 'fileutils'
 
 module Vagabond
   class Box
-    attr_reader :name
-    attr_reader :build_path
+    attr_reader :name, :build_path, :env
     def initialize(name, env)
       @name = name
       @env = env
