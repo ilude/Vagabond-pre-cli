@@ -1,49 +1,34 @@
 # postinstall.sh created from Mitchell's official lucid32/64 baseboxes
 
-date > /etc/vagrant_box_build_time
+date > /etc/vagabond_build_date
 
 # Apt-install various things necessary for Ruby, guest additions,
 # etc., and remove optional things to trim down the machine.
 apt-get -y update
 apt-get -y upgrade
-apt-get -y install linux-headers-$(uname -r) build-essential
-apt-get -y install build-essential libreadline-gplv2-dev libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison curl git
-apt-get clean
-
-# Setup sudo to allow no-password sudo for "admin"
-cp /etc/sudoers /etc/sudoers.orig
-sed -i -e '/Defaults\s\+env_reset/a Defaults\texempt_group=admin' /etc/sudoers
-sed -i -e 's/%admin ALL=(ALL) ALL/%admin ALL=NOPASSWD:ALL/g' /etc/sudoers
-
-# Install NFS client
-apt-get -y install nfs-common
+apt-get -y install linux-headers-$(uname -r)
+apt-get -y install build-essential libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison curl git subversion 
 
 # Install Ruby from source in /opt so that users of Vagrant
 # can install their own Rubies using packages or however.
-wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p290.tar.gz
-tar xvzf ruby-1.9.2-p290.tar.gz
-cd ruby-1.9.2-p290
-./configure --prefix=/opt/ruby
+wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p125.tar.gz
+tar xvzf ruby-1.9.3-p125.tar.gz
+cd ruby-1.9.3-p125
+./configure
 make
 make install
 cd ..
-rm -rf ruby-1.9.2-p290
+rm -rf ruby-1.9.3-p125
 
-# Install RubyGems 1.7.2
-wget http://production.cf.rubygems.org/rubygems/rubygems-1.8.11.tgz
-tar xzf rubygems-1.8.11.tgz
-cd rubygems-1.8.11
-/opt/ruby/bin/ruby setup.rb
-cd ..
-rm -rf rubygems-1.8.11
+# Update RubyGems
+gem update --system
+gem update
+gem clean
 
-# Installing chef & Puppet
-/opt/ruby/bin/gem install chef --no-ri --no-rdoc
-/opt/ruby/bin/gem install puppet --no-ri --no-rdoc
+# Install Bundler & chef
+gem install bundler chef --no-ri --no-rdoc
 
-# Add /opt/ruby/bin to the global path as the last resort so
-# Ruby, RubyGems, and Chef/Puppet are visible
-echo 'PATH=$PATH:/opt/ruby/bin/'> /etc/profile.d/vagrantruby.sh
+
 
 # Installing vagrant keys
 mkdir /home/vagrant/.ssh
@@ -54,14 +39,21 @@ chmod 600 /home/vagrant/.ssh/authorized_keys
 chown -R vagrant /home/vagrant/.ssh
 
 # Installing the virtualbox guest additions
-VBOX_VERSION=$(cat /home/vagrant/.vbox_version)
+#VBOX_VERSION=$(cat /home/vagrant/.vbox_version)
+#cd /tmp
+#wget http://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso
+#mount -o loop VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
+#sh /mnt/VBoxLinuxAdditions.run
+#rm VBoxGuestAdditions_$VBOX_VERSION.iso
+
 cd /tmp
-wget http://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso
-mount -o loop VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
+wget http://download.virtualbox.org/virtualbox/4.1.8/VBoxGuestAdditions_4.1.8.iso
+mount -o loop VBoxGuestAdditions_4.1.8.iso
 sh /mnt/VBoxLinuxAdditions.run
 umount /mnt
+rm VBoxGuestAdditions_4.1.8.iso
 
-rm VBoxGuestAdditions_$VBOX_VERSION.iso
+
 
 # Remove items used for building, since they aren't needed anymore
 apt-get -y remove linux-headers-$(uname -r) build-essential
