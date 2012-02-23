@@ -7,7 +7,7 @@ date > /etc/vagrant_box_build_time
 apt-get -y update
 apt-get -y upgrade
 apt-get -y install linux-headers-$(uname -r) build-essential
-apt-get -y install zlib1g-dev libssl-dev libreadline-gplv2-dev
+apt-get -y install build-essential libreadline-gplv2-dev libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison curl git
 apt-get clean
 
 # Setup sudo to allow no-password sudo for "admin"
