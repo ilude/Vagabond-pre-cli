@@ -4,6 +4,9 @@ date > /etc/vagabond_build_date
 #echo "<%= env.vbox_version %>" > /etc/vagabond_vbox_version
 echo "4.1.8" > /etc/vagabond_vbox_version
 
+# disable screen blanking
+setterm -blank 0
+
 # Apt-install various things necessary for Ruby, guest additions,
 # etc., and remove optional things to trim down the machine.
 apt-get -y update
@@ -23,12 +26,12 @@ cd ..
 rm -rf ruby-1.9.3-p125
 
 # Update RubyGems
-gem update --system
-gem update
-gem clean
+/usr/local/bin/gem update --system --no-ri --no-rdoc
+/usr/local/bin/gem update --no-ri --no-rdoc
+/usr/local/bin/gem clean
 
 # Install Bundler & chef
-gem install bundler chef --no-ri --no-rdoc
+/usr/local/bin/gem install bundler chef --no-ri --no-rdoc
 
 # Installing vagrant keys
 #mkdir /home/vagrant/.ssh
@@ -46,19 +49,19 @@ gem install bundler chef --no-ri --no-rdoc
 #sh /mnt/VBoxLinuxAdditions.run
 #rm VBoxGuestAdditions_$VBOX_VERSION.iso
 
-VBOX_VERSION=$(cat /etc/vagabond_vbox_version)
+#VBOX_VERSION=$(cat /etc/vagabond_vbox_version)
 #wget http://download.virtualbox.org/virtualbox/4.1.8/VBoxGuestAdditions_4.1.8.iso
-wget http://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso
-#mount -o loop VBoxGuestAdditions_4.1.8.iso
-mount -o loop VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
-sh /mnt/VBoxLinuxAdditions.run
-umount /mnt
+#wget http://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso
+#mount -o loop,ro VBoxGuestAdditions_4.1.8.iso
+#mount -o loop,ro VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
+#sh /mnt/VBoxLinuxAdditions.run
+#umount /mnt
 #rm VBoxGuestAdditions_4.1.8.iso
-rm VBoxGuestAdditions_$VBOX_VERSION.iso
-unset VBOX_VERSION
+#rm VBoxGuestAdditions_$VBOX_VERSION.iso
+#unset VBOX_VERSION
 
 # Remove items used for building, since they aren't needed anymore
-apt-get -y remove linux-headers-$(uname -r) build-essential
+# apt-get -y remove linux-headers-$(uname -r) build-essential
 apt-get -y clean
 apt-get -y autoclean
 apt-get -y autoremove

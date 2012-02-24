@@ -75,17 +75,17 @@ module Vagabond
         :web_dir => build_path}
       )
 
-      #Vagabond::Web.wait_for_request({
-      #  :filename => "latecommand.sh",
-      #  :port => port, 
-      #  :web_dir => build_path}
-      #)
+      Vagabond::Web.wait_for_request({
+        :filename => "latecommand.sh",
+        :port => port, 
+        :web_dir => build_path}
+      )
 
-      #Vagabond::Web.wait_for_request({
-      #  :filename => "postinstall.sh",
-      #  :port => port, 
-      #  :web_dir => build_path}
-      #)
+      Vagabond::Web.wait_for_request({
+        :filename => "postinstall.sh",
+        :port => port, 
+        :web_dir => build_path}
+      )
 
     end
 
@@ -97,5 +97,8 @@ module Vagabond
       return Dir.exists?(File.join(@env.builds_path, @name))
     end
     
+    def get_binding
+      binding
+    end
   end
 end
