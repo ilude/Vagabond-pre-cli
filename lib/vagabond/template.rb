@@ -15,7 +15,7 @@ module Vagabond
     end
 
     def create(box)
-      source = Dir.glob(File.join(@env.template_path, name, '*.*'))
+      source = Dir.glob(File.join(@env.template_path, @name, '*.*'))
       destination = File.join(@env.builds_path, box.name)
 
       Dir.mkdir(@env.builds_path) unless(Dir.exists?(@env.builds_path))

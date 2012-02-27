@@ -3,26 +3,46 @@ require 'fileutils'
 module Vagabond
   class Box
     attr_reader :name, :build_path, :env
+    attr_accessor :template
+
     def initialize(name, env)
       @name = name
       @env = env
       @build_path = File.join(env.builds_path, name)
     end
 
-    def self.find(name, env = Vagabond::Environment.new)
-      box = Box.new(name, env)
+    def template=(value)
+      puts "setting template to #{value}"
+      @template = value
+    end
 
-      raise Exception, "No such box #{name} found!" unless box.created?
-      
-      box
+    def template
+      puts "getting template #{@template}"
+      @template
+    end
+
+    def self.find_or_create(name, env, &block)
+      find(name, env) || create(name, env, &block)
+    end
+
+    def self.find(name, env = Environment.new)
+      box = Box.new(name, env)
+      if(box.created?)
+        return box
+      else
+        return nil
+      end
     end
     
-    def self.create(name, template, env = Vagabond::Environment.new)
+    def self.create(name, env, &block)
+      puts "creating box #{name}"
       box = Box.new(name, env)
 
       raise Exception.new("Box #{name} already exist!") if(box.created?)
 
-      template = Template.new(template, env);
+      box.instance_eval(&block)
+
+      template = Template.new(box.template, env);
 
       raise Exception, "Template #{template} does not exist at #{template.path}!" unless(template.exists?)
 
@@ -94,6 +114,8 @@ module Vagabond
     end
 
     def created?
+      puts "#{@name} at #{@env.builds_path} exists: #{Dir.exists?(File.join(@env.builds_path, @name))}"
+
       return Dir.exists?(File.join(@env.builds_path, @name))
     end
     

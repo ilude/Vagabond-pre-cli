@@ -16,6 +16,16 @@ module Vagabond
       property = m.to_sym
       return @env[property] if(@env.has_key? property)
     end
+
+    def virtualbox_found?
+      if(@version.nil?)
+        begin
+          !Vagabond::VM::Commands.version.empty?
+        rescue
+          false
+        end
+      end
+    end
     
   end
   

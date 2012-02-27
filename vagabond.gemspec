@@ -26,5 +26,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "ruby_gntp"
   #s.add_development_dependency 'win32console'
 
-  # s.add_runtime_dependency "rest-client"
+  s.add_runtime_dependency "net-ssh"
 end

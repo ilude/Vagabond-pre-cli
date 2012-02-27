@@ -2,7 +2,6 @@ require "bundler/gem_tasks"
 require 'vagabond'
 
 task :bb do
-	
 	box = Vagabond::Box.create('test','ubuntu-11.10-server-amd64', Vagabond::Environment.new)
 	box.build
 end
@@ -21,13 +20,14 @@ task :test_ssh do
 	end
 end
 
-desc "Web test"
-task :web do
-	box = Vagabond::Box.find("test")
-	Vagabond::Web.wait_for_request({
-    :filename => "latecommand.sh",
-    :port => port ||= 7070, 
-    :web_dir => box.build_path,
-    :box => box
-  })
+desc "Create cloud"
+task :create do
+  Vagabond.run
+end
+
+desc "Delete box"
+task :delete do
+  command = ARGV.shift
+  box = Vagabond::Box.find(ARGV.shift)
+  box.destroy
 end

@@ -1,0 +1,4 @@
+box 'jingle' do
+  self.template = 'ubuntu-11.10-server-amd64'
+end
+  
