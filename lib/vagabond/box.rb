@@ -12,12 +12,10 @@ module Vagabond
     end
 
     def template=(value)
-      puts "setting template to #{value}"
       @template = value
     end
 
     def template
-      puts "getting template #{@template}"
       @template
     end
 
