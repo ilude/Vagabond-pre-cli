@@ -1,8 +1,8 @@
 #!/bin/sh -e
 # set the build date and virtual box version
 date > /etc/vagabond_build_date
-#echo "<%= env.vbox_version %>" > /etc/vagabond_vbox_version
-echo "4.1.8" > /etc/vagabond_vbox_version
+echo "<%= env.vbox_version %>" > /etc/vagabond_vbox_version
+#echo "4.1.8" > /etc/vagabond_vbox_version
 
 # disable screen blanking
 setterm -blank 0

@@ -182,7 +182,7 @@ module Vagabond
       def self.execute(args)
         output = ''
 
-        puts "#{@virtualbox_command} #{args}"
+        #puts "#{@virtualbox_command} #{args}"
 
         IO.popen "#{@virtualbox_command} #{args}" do |process|
           output = process.read

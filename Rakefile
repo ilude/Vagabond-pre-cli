@@ -15,7 +15,7 @@ end
 
 task :test_ssh do
 	require 'net/ssh'
-	Net::SSH.start(Vagabond::Environment.new.host_ip, 'vagrant', :password => 'vagrant', :port => 7222) do |session|
+	Net::SSH.start(Vagabond::Environment.new.host, 'vagrant', :password => 'vagrant', :port => 7222) do |session|
 		file = "/var/log/messages"
 		puts session.exec! "uptime"
 		puts session.exec! "hostname"

@@ -68,7 +68,6 @@ module Vagabond
 
       sleep 5
 
-      port = 7070
       sequence = [
         '<Esc><Esc><Enter><Wait>',
         '/install/vmlinuz noapic preseed/url=http://%IP%:%PORT%/preseed.cfg ',
@@ -80,8 +79,8 @@ module Vagabond
       ]  
 
       sequence.each { |s|  
-        s.gsub!(/%IP%/, @env.host_ip);
-        s.gsub!(/%PORT%/,port.to_s);
+        s.gsub!(/%IP%/, @env.host);
+        s.gsub!(/%PORT%/, @env.port.to_s);
         s.gsub!(/%NAME%/, name);
 
         Vagabond::VM::Commands.send_sequence(name,s)
@@ -89,20 +88,20 @@ module Vagabond
 
       Vagabond::Web.wait_for_request({
         :filename => "preseed.cfg",
-        :port => port, 
-        :web_dir => build_path}
+        :web_dir => build_path},
+        self
       )
 
       Vagabond::Web.wait_for_request({
         :filename => "latecommand.sh",
-        :port => port, 
-        :web_dir => build_path}
+        :web_dir => build_path},
+        self
       )
 
       Vagabond::Web.wait_for_request({
         :filename => "postinstall.sh",
-        :port => port, 
-        :web_dir => build_path}
+        :web_dir => build_path},
+        self
       )
 
     end
