@@ -111,8 +111,6 @@ module Vagabond
     end
 
     def created?
-      puts "#{@name} at #{@env.builds_path} exists: #{Dir.exists?(File.join(@env.builds_path, @name))}"
-
       return Dir.exists?(File.join(@env.builds_path, @name))
     end
     

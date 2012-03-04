@@ -8,9 +8,7 @@
 
 /bin/cp /etc/rc.local /etc/rc.local.orig
 /bin/rm /etc/rc.local
-#/usr/bin/wget <%= server_url %>/postinstall.sh -O /etc/rc.local
 /usr/bin/wget http://<%= env.host %>:<%= env.port %>/postinstall.sh -O /etc/rc.local
-#/usr/bin/wget https://raw.github.com/gist/1896028/e889a11959ddef0db727b6871b99d17cbc5a8b83/postinstall.sh -O /etc/rc.local
 
 /bin/chmod 755 /etc/rc.local
 
