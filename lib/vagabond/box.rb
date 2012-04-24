@@ -66,10 +66,10 @@ module Vagabond
       Vagabond::VM::Commands.create_ssh_mapping(name)
       Vagabond::VM::Commands.start(name)
 
-      sleep 5
+      sleep 10
 
       sequence = [
-        '<Esc><Esc><Enter><Wait>',
+        '<Esc><Wait><Esc><Wait><Enter><Wait>',
         '/install/vmlinuz noapic preseed/url=http://%IP%:%PORT%/preseed.cfg ',
         'debian-installer=en_US auto locale=en_US kbd-chooser/method=us ',
         'hostname=%NAME% ',

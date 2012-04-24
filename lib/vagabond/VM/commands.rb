@@ -45,7 +45,7 @@ module Vagabond
       end
 
       def self.create_ssh_mapping(boxname, guestport=22, hostport=7222)
-        execute "modifyvm \"#{boxname}\" --natpf1 'guestssh,tcp,,#{hostport},,#{guestport}'",
+        execute "modifyvm \"#{boxname}\" --natpf1 'guestssh,tcp,,#{hostport},,#{guestport}'"
       end
 
       def self.set_boot_order(boxname)
@@ -71,7 +71,8 @@ module Vagabond
             next         
           end
 
-          execute "controlvm \"#{boxname}\" keyboardputscancode #{keycode}"  
+          execute "controlvm \"#{boxname}\" keyboardputscancode #{keycode}"
+          puts "controlvm \"#{boxname}\" keyboardputscancode #{keycode}"
           sleep 0.01 
         }
       end
