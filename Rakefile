@@ -2,14 +2,14 @@ require "bundler/gem_tasks"
 require 'vagabond'
 
 task :bb do
-	box = Vagabond::Box.create('test', Vagabond::Environment.new) do
-    self.template = 'ubuntu-11.10-server-amd64'
+	box = Vagabond::Box.create('test-12.04', Vagabond::Environment.new) do
+    self.template = 'ubuntu-12.04-server-amd64'
   end
 	box.build
 end
 
 task :db do
-	box = Vagabond::Box.find("test")
+	box = Vagabond::Box.find('test-12.04')
 	box.destroy
 end
 
